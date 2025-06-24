@@ -2,6 +2,12 @@ const express = require('express');
 const ticketController = require('../controller/ticket.control');
 const router = express.Router();
 const { body } = require('express-validator');
+const usercontrol = require('../controller/user.control');
+
+router.post('/login', [
+    body('email').isEmail().withMessage('Invalid email format'),
+    body('password').notEmpty().withMessage('Password is required')
+], usercontrol.userLogin);
 
 router.post('/add',[
     body('token').notEmpty().withMessage('Token is required'),

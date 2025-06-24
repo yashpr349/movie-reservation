@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react'; // Eye icons for password toggle
 
 function Auth() {
-  const [username, setUsername] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -11,50 +12,61 @@ function Auth() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic
-    console.log({ username, password });
+    console.log({ email, password });
+    fetch('http://localhost:4040/admin/login', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    }).then((res)=> data)
+    .then((data)=> console.log(data))
   };
 
   return (
-    <div className="h-screen w-full flex flex-col md:flex-row items-center justify-center bg-gray-100 p-4">
-      {/* Left Side Image or Visual - Hidden on small screens */}
-      <div className="hidden md:block md:w-1/2 h-full bg-black rounded-2xl m-0.5"></div>
+    <div className="h-screen w-full flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-purple-100 to-indigo-200">
+      {/* Left Image */}
+      <div className="hidden md:block md:w-1/2 h-[99%] rounded-2xl m-2 bg-cover bg-center shadow-xl" 
+           style={{ backgroundImage: "url('https://cdn.dribbble.com/userupload/14898990/file/original-ba68e98ea10e1867e831884c3b153387.png?resize=1600x1200&vertical=center')" }}>
+      </div>
 
-      {/* Right Side Form */}
-      <div className="w-full md:w-1/2 h-full flex items-center justify-center">
+      {/* Right Form */}
+      <div className="w-full md:w-1/2 h-full flex items-center justify-center p-4">
         <form
           onSubmit={handleSubmit}
-          className="bg-transparent w-full max-w-md p-8 rounded-2xl shadow-md"
+          className="backdrop-blur-md bg-white/80 border border-gray-300 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all"
         >
-          <h1 className="text-center text-2xl font-bold mb-6">Welcome Admin</h1>
+          <h1 className="text-[#7D4BFF] text-3xl font-bold mb-6 font-mono">Admin Panel</h1>
 
+          <label className="block mb-2 text-sm font-medium">Email</label>
           <input
             type="text"
-            className="w-full h-10 bg-gray-200 rounded-xl px-4 border border-black mb-4"
-            value={username}
-            placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
+            className="w-full h-10 px-4 rounded-lg bg-gray-100 border focus:outline-none focus:ring-2 focus:ring-[#7D4BFF] transition mb-4"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
           />
 
-          <div className="relative mb-4">
+          <label className="block mb-2 text-sm font-medium">Password</label>
+          <div className="relative">
             <input
               type={passwordVisible ? 'text' : 'password'}
-              className="w-full h-10 bg-gray-200 rounded-xl px-4 border border-black pr-10"
+              className="w-full h-10 px-4 pr-10 rounded-lg bg-gray-100 border focus:outline-none focus:ring-2 focus:ring-[#7D4BFF] transition"
+              placeholder="Enter your password"
               value={password}
-              placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <span
-              className="absolute right-3 top-2.5 cursor-pointer text-sm text-blue-500"
+            <div
+              className="absolute right-3 top-2.5 text-gray-600 cursor-pointer"
               onClick={togglePasswordVisibility}
             >
-              {passwordVisible ? 'Hide' : 'Show'}
-            </span>
+              {passwordVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full h-10 bg-black text-white rounded-xl hover:bg-gray-800 transition"
+            className="mt-6 w-full h-10 bg-[#7D4BFF] text-white font-semibold rounded-lg hover:bg-purple-700 transition"
           >
             Login
           </button>
